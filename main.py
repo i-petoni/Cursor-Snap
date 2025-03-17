@@ -95,19 +95,20 @@ def change_hotkey_btn_func():
 
     # Stop listening and save hotkey to variable
     def confirm_hotkey():
-        stop_event.set()  # stop key listening
-        global new_hotkey, saved_hotkey
-        keyboard.remove_hotkey(saved_hotkey)
-        new_hotkey = selected_hotkey_label_var.get() or None  # save hotkey in variable
-        saved_hotkey = new_hotkey
-        keyboard.add_hotkey(saved_hotkey, move_cursor_to_saved_position)
-        new_hotkey_popup.destroy()  # close popup
-        with open("attr.txt", "r") as read_attr_file:
-           saved_attributes = read_attr_file.readlines()
-           saved_attributes[0] = f"{new_hotkey}\n"
-        with open("attr.txt", "w") as update_attr_file:
-            update_attr_file.writelines(saved_attributes)
-        current_hotkey_label.configure(text=new_hotkey)
+        if len(recorded_keys) > 0:
+            stop_event.set()  # stop key listening
+            global new_hotkey, saved_hotkey
+            keyboard.remove_hotkey(saved_hotkey)
+            new_hotkey = selected_hotkey_label_var.get() or None  # save hotkey in variable
+            saved_hotkey = new_hotkey
+            keyboard.add_hotkey(saved_hotkey, move_cursor_to_saved_position)
+            new_hotkey_popup.destroy()  # close popup
+            with open("attr.txt", "r") as read_attr_file:
+               saved_attributes = read_attr_file.readlines()
+               saved_attributes[0] = f"{new_hotkey}\n"
+            with open("attr.txt", "w") as update_attr_file:
+                update_attr_file.writelines(saved_attributes)
+            current_hotkey_label.configure(text=new_hotkey)
 
     new_hotkey_ok_btn = ctk.CTkButton(new_hotkey_popup, text="OK", font=("Inter", 16, "bold"), text_color="#1b1b1b", fg_color="#1ea7f7", width=300, height=30, corner_radius=0, hover_color="#77dce8", command=confirm_hotkey)
     new_hotkey_ok_btn.place(relx=0.001, rely=0.85)
