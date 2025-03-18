@@ -28,12 +28,11 @@ def initial_processes():
 def cursor():
     global saved_cursor_position
     saved_cursor_position = None  # Variable to store the cursor position
-    idle_time = int(saved_time)
     def track_cursor():
         global saved_cursor_position
         prev_position = pyautogui.position()
         while True:
-            time.sleep(idle_time)
+            time.sleep(int(saved_time))
             current_position = pyautogui.position()
             if current_position == prev_position:
                 saved_cursor_position = current_position  # Save position if idle
